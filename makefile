@@ -1,4 +1,4 @@
-# already assums you have everything installed
+# already assumes you have everything installed
 CC = gcc
 
 CFLAGS = -Wall -g
@@ -12,9 +12,9 @@ LIBS = -lglfw -lGL -lGLEW -lm
 SRCS = main.c
 OBJS = $(SRCS:.c=.o)
 
-EXEC = 3d_game
+EXEC = kernel_game #executeable's name
 
-all: $(EXEC)
+all: $(EXEC )
 
 $(EXEC): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) $(OBJS) -o $(EXEC) $(LIBDIRS) $(LIBS)
