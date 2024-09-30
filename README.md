@@ -1,6 +1,4 @@
-* This creates a window with a rotating cube in the center.
-* The cube is colored and has a reflective surface.
-* The camera can be moved around using the W, A, S, and D keys.
+
 
 
 #### Limitations
