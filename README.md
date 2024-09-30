@@ -1,4 +1,13 @@
+stucture:
 
+```
+game/
+├── main.c
+├── shaders/
+│   ├── vertex_shader.glsl
+│   └── fragment_shader.glsl
+└── Makefile
+```
 
 
 #### Limitations
