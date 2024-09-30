@@ -15,7 +15,7 @@ float vertices[] = {
     -0.5f, -0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 0.0f, -1.0f,
      0.5f, -0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
      0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, -1.0f,
-     0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,   0.0f, 0.0f, -1.0f,
+     0.5f,  0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 0.0f, -1.0f,
     -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
     -0.5f, -0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 0.0f, -1.0f,
 
@@ -28,7 +28,7 @@ float vertices[] = {
 
     -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f ,  0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
     -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
     -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
@@ -49,7 +49,7 @@ float vertices[] = {
 
     -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,
      0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f, 0.0f,
+     0.5f ,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f, 0.0f,
      0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f, 0.0f,
     -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f
@@ -72,7 +72,7 @@ int main() {
     }
 
     // Create a window
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR _HEIGHT, "3D Rendering", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "3D Rendering", NULL, NULL);
     if (!window) {
         printf("Failed to create GLFW window\n");
         glfwTerminate();
@@ -170,7 +170,7 @@ int main() {
 
         // Set up the view and projection matrices
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "view"), 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm:: value_ptr(projection));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
         glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "model"), 1, GL_FALSE, glm::value_ptr(model));
 
         // Draw the cube
