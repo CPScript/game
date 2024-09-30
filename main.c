@@ -28,7 +28,7 @@ float vertices[] = {
 
     -0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f, -1.0f, 0.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f ,  0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
+    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
     -0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f, -1.0f, 0.0f, 0.0f,
     -0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
     -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f, -1.0f, 0.0f, 0.0f,
@@ -36,7 +36,7 @@ float vertices[] = {
      0.5f,  0.5f,  0.5f,  1.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,
      0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,
      0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  0.0 f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,
+     0.5f, -0.5f, -0.5f,  0.0f, 0.0f, 1.0f,  1.0f, 0.0f, 0.0f,
      0.5f, -0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,
      0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,
 
@@ -49,8 +49,8 @@ float vertices[] = {
 
     -0.5f,  0.5f, -0.5f,  1.0f, 0.0f, 0.0f,  0.0f, 1.0f, 0.0f,
      0.5f,  0.5f, -0.5f,  0.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,
-     0.5f ,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f, 0.0f,
      0.5f,  0.5f,  0.5f,  0.0f, 0.0f, 1.0f,  0.0f, 1.0f, 0.0f,
+     0.5f,  0.5f,  0.5f,  0.0f,  0.0f, 1.0f,  0.0f, 1.0f, 0.0f,
     -0.5f,  0.5f,  0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f,
     -0.5f,  0.5f, -0.5f,  1.0f, 1.0f, 0.0f,  0.0f, 1.0f, 0.0f
 };
@@ -115,12 +115,62 @@ int main() {
 
     // Load shaders
     unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    char* vertexShaderSource = "..."; // Load vertex shader source
+    const char* vertexShaderSource = R"glsl(
+        #version 330 core
+        layout(location = 0) in vec3 aPos;
+        layout(location = 1) in vec3 aColor;
+        layout(location = 2) in vec3 aNormal;
+
+        out vec3 FragPos;
+        out vec3 Normal;
+        out vec3 Color;
+
+        uniform mat4 model;
+        uniform mat4 view;
+        uniform mat4 projection;
+
+        void main() {
+            FragPos = vec3(model * vec4(aPos, 1.0));
+            Normal = mat3(transpose(inverse(model))) * aNormal;
+            Color = aColor;
+            gl_Position = projection * view * vec4(FragPos, 1.0);
+        }
+    )glsl";
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
 
     unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    char* fragmentShaderSource = "..."; // Load fragment shader source
+    const char* fragmentShaderSource = R"glsl(
+        #version 330 core
+        out vec4 FragColor;
+
+        in vec3 FragPos;
+        in vec3 Normal;
+        in vec3 Color;
+
+        uniform vec3 viewPos;
+
+        void main() {
+            // Ambient
+            float ambientStrength = 0.1;
+            vec3 ambient = ambientStrength * Color;
+
+            // Diffuse
+            vec3 lightDir = normalize(vec3(0.0, 1.0, 0.0) - FragPos);
+            float diff = max(dot(Normal, lightDir), 0.0);
+            vec3 diffuse = diff * Color;
+
+            // Specular
+            float specularStrength = 0.5;
+            vec3 viewDir = normalize (viewPos - FragPos);
+            vec3 reflectDir = reflect(-lightDir, Normal);
+            float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+            vec3 specular = specularStrength * spec * vec3(1.0);
+
+            vec3 result = ambient + diffuse + specular;
+            FragColor = vec4(result, 1.0);
+        }
+    )glsl";
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
