@@ -1,3 +1,8 @@
+description:
+* attempt to make an extremely "simple" and low level 3d game... (simple 3d engine that makes a small map that has a reflective cube)
+* this was used as a example for a diffrent repository called 'malware-game' i made
+* might be buggy
+
 stucture:
 
 ```
